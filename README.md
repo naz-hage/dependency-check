@@ -11,7 +11,7 @@ This repository provides a template for running dependency vulnerability checks 
    Add your key to your environment variables as `NVD_API_KEY`.
 
 3. **Configure the Scan Script**  
-   Edit `.scan.ps1` to specify the path to your project directory.
+   Edit [scan.ps1](.\scan.ps1) to specify the path to your project directory.
 
 4. **Run the Scan**  
    Execute the script in PowerShell:
