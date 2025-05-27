@@ -42,6 +42,11 @@ if (-not (Test-Path -Path $ScanPath)) {
   exit 1
 }
 
+$reportPath = Join-Path -Path $OutputDir -ChildPath "dependency-check-report.html"
+if (Test-Path -Path $OutputDir) {
+  Remove-Item -Path $OutputDir -Recurse -Force
+}
+
 & $dependencyCheckScan `
   --project $ProjectName `
   --scan $ScanPath `
@@ -53,3 +58,8 @@ if ($LASTEXITCODE -ne 0) {
   Write-Error "Dependency Check scan failed with exit code $LASTEXITCODE. Please check the tool's output for more details."
   exit $LASTEXITCODE
 }
+
+if (Test-Path $reportPath) {
+    Start-Process $reportPath
+}
+
