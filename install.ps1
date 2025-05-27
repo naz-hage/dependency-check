@@ -1,3 +1,5 @@
+# This script downloads and extracts the Dependency Check tool from GitHub.
+# It assumes that the user has the necessary permissions to create directories and download files.
 . "$PSScriptRoot\config.ps1"
 
 $uri="https://github.com/jeremylong/DependencyCheck/releases/download/v$version/dependency-check-$version-release.zip"

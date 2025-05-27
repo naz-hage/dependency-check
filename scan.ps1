@@ -1,11 +1,29 @@
+# This script scans a project using the Dependency Check tool.
+# It requires the NVD_API_KEY environment variable to be set for accessing the NVD API.
+# Required Parameters:
+# - ProjectName: Name of the project to be scanned.
+# - ScanPath: Path to the project directory to be scanned.
+# - ReportFormat: Format of the report to be generated (default is HTML).
+# - OutputDir: Directory where the report will be saved (default is "minikube-report"). 
+
 param(
+  [Parameter(Mandatory=$true)]
   [string]$ProjectName = "minikube",
+  
+  [Parameter(Mandatory=$true)]
   [string]$ScanPath = "C:\source\minikube",
+  
+  [Parameter(Mandatory=$false)]
   [string]$ReportFormat = "HTML",
-  [string]$OutputDir = "minikube-report"
+  
+  [Parameter(Mandatory=$true)]
+  [string]$OutputDir 
 )
 
 . "$PSScriptRoot\config.ps1"
+
+# if output directory is not specified, use the default "minikube-report"
+$OutputDir = Join-Path -Path $installedPath -ChildPath $OutputDir
 
 if (-not $env:NVD_API_KEY) {
   Write-Error "NVD_API_KEY environment variable is not set. Please set it and try again."
@@ -13,8 +31,6 @@ if (-not $env:NVD_API_KEY) {
 }
 
 Write-Host "NVD_API_KEY is set, proceeding with the scan."
-
-$dependencyCheckScan = "$installedPath\dependency-check\bin\dependency-check.bat"
 
 if (-not (Test-Path -Path $dependencyCheckScan)) {
   Write-Error "Dependency Check executable does not exist at $dependencyCheckScan. Please ensure it is installed correctly."
