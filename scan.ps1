@@ -5,7 +5,8 @@ param(
   [string]$OutputDir = "minikube-report"
 )
 
-$version = "12.1.0"
+. "$PSScriptRoot\config.ps1"
+
 if (-not $env:NVD_API_KEY) {
   Write-Error "NVD_API_KEY environment variable is not set. Please set it and try again."
   exit 1
@@ -13,7 +14,7 @@ if (-not $env:NVD_API_KEY) {
 
 Write-Host "NVD_API_KEY is set, proceeding with the scan."
 
-$dependencyCheckScan = ".\dependency-check-$version\dependency-check\bin\dependency-check.bat"
+$dependencyCheckScan = "$installedPath\dependency-check\bin\dependency-check.bat"
 
 if (-not (Test-Path -Path $dependencyCheckScan)) {
   Write-Error "Dependency Check executable does not exist at $dependencyCheckScan. Please ensure it is installed correctly."
@@ -32,5 +33,7 @@ if (-not (Test-Path -Path $ScanPath)) {
   --out $OutputDir `
   --nvdApiKey $env:NVD_API_KEY  `
   --nvdApiDelay 6000
-
-
+if ($LASTEXITCODE -ne 0) {
+  Write-Error "Dependency Check scan failed with exit code $LASTEXITCODE. Please check the tool's output for more details."
+  exit $LASTEXITCODE
+}
