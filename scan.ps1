@@ -43,8 +43,9 @@ if (-not (Test-Path -Path $ScanPath)) {
 }
 
 $reportPath = Join-Path -Path $OutputDir -ChildPath "dependency-check-report.html"
-if (Test-Path -Path $OutputDir) {
-  Remove-Item -Path $OutputDir -Recurse -Force
+if (Test-Path -Path $reportPath) {
+  Write-Host "Removing existing report at $reportPath"
+  Remove-Item -Path $reportPath -Recurse -Force -ErrorAction SilentlyContinue
 }
 
 & $dependencyCheckScan `
