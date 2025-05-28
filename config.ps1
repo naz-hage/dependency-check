@@ -8,7 +8,7 @@ if (-not (Test-Path -Path $downloadsFolder)) {
 }
 $downloadFile = "$downloadsFolder\dependency-check-$version-release.zip"
 
-$installedPath = "$downloadsFolder\dependency-check-$version"
+$installedPath = "$env:USERPROFILE\dependency-check-$version"
 
 $dependencyCheckScan = Join-Path -Path $installedPath -ChildPath "dependency-check\bin\dependency-check.bat"
 
